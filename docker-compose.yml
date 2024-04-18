@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  booking-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - booking-backend
+    networks:
+      - booking-network
+  booking-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql-container
+      - redis-container
+    networks:
+      - booking-network
+  mysql-container:
+    image: mysql
+    volumes:
+      - /Users/luyao/mysql-deploy-test:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: meeting_room_booking_system
+      MYSQL_ROOT_PASSWORD: admin
+    networks:
+      - booking-network
+  redis-container:
+    image: redis
+    volumes:
+      - /Users/luyao/redis-deploy-test-data:/data
+    networks:
+      - booking-network
+networks:
+  booking-network:
+    driver: bridge
