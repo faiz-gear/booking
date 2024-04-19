@@ -9,7 +9,6 @@ import { Permission } from './user/entities/permission.entity';
 import { RedisModule } from './redis/redis.module';
 import { EmailModule } from './email/email.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { join } from 'path';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { LoginGuard } from './login.guard';
@@ -19,6 +18,13 @@ import { MeetingRoom } from './meeting-room/entities/meeting-room.entity';
 import { BookingModule } from './booking/booking.module';
 import { Booking } from './booking/entities/booking.entity';
 import { StatsModule } from './stats/stats.module';
+import { isProduction, pathJoin } from './utils';
+
+const envPaths = [pathJoin('.env.local'), pathJoin('.env')];
+if (isProduction) {
+  // 生产环境下，只加载 .env 文件
+  envPaths.shift();
+}
 
 @Module({
   imports: [
@@ -37,8 +43,8 @@ import { StatsModule } from './stats/stats.module';
           username,
           password,
           database,
-          synchronize: true,
-          logging: true,
+          synchronize: !isProduction,
+          logging: isProduction ? ['error', 'migration', 'warn'] : 'all',
           entities: [User, Role, Permission, MeetingRoom, Booking],
           poolSize: 10,
           connectorPackage: 'mysql2',
@@ -48,7 +54,7 @@ import { StatsModule } from './stats/stats.module';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [join(__dirname, '.env.local'), join(__dirname, '.env')],
+      envFilePath: envPaths,
     }),
     JwtModule.registerAsync({
       global: true,

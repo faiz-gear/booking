@@ -5,7 +5,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - 80:80
+      - 6000:80
     depends_on:
       - booking-backend
     networks:
@@ -17,6 +17,11 @@ services:
     depends_on:
       - mysql-container
       - redis-container
+    environment:
+      NODEMAILER_AUTH_USER: 1824056030@qq.com
+      NODEMAILER_AUTH_PASS: NODEMAILER_AUTH_PASS
+      REDIS_SERVER_HOST: redis-container
+      MYSQL_SERVER_HOST: mysql-container
     networks:
       - booking-network
   mysql-container:
@@ -26,10 +31,14 @@ services:
     environment:
       MYSQL_DATABASE: meeting_room_booking_system
       MYSQL_ROOT_PASSWORD: admin
+    ports:
+      - 6001:3306
     networks:
       - booking-network
   redis-container:
     image: redis
+    ports:
+      - 6002:6379
     volumes:
       - /Users/luyao/redis-deploy-test-data:/data
     networks:

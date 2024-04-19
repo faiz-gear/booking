@@ -1,5 +1,6 @@
 import { BadRequestException, ParseIntPipe } from '@nestjs/common';
 import * as crypto from 'crypto';
+import { join } from 'path';
 
 export function md5(str: string) {
   return crypto.createHash('md5').update(str).digest('hex');
@@ -13,3 +14,7 @@ export function generateParseIntPipe(name) {
     },
   });
 }
+
+export const pathJoin = (path: string) => join(__dirname, path);
+
+export const isProduction = process.env.NEST_ENV === 'production';

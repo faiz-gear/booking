@@ -19,7 +19,7 @@ RUN pnpm  build
 # production stage
 FROM node:20-alpine3.19 as production-stage
 
-COPY --from=build-stage /app/dist /app
+COPY --from=build-stage /app/dist /app/dist
 COPY --from=build-stage /app/package.json /app/package.json
 COPY --from=build-stage /app/pnpm-lock.yaml /app/pnpm-lock.yaml
 
@@ -33,4 +33,4 @@ RUN pnpm install --production
 
 EXPOSE 3000
 
-CMD ["node", "main"]
+CMD ["pnpm", "start:prod"]
