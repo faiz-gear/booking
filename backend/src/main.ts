@@ -7,9 +7,14 @@ import { InvokeRecordInterceptor } from './invoke-record.interceptor';
 import { CustomExceptionFilter } from './custom-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { isProduction } from './utils';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    logger: isProduction
+      ? ['error']
+      : ['log', 'error', 'warn', 'debug', 'verbose'],
+  });
 
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
