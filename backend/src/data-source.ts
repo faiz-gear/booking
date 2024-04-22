@@ -1,6 +1,6 @@
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { isProduction } from './utils';
+import { envPaths, isProduction } from './utils';
 import { User } from './user/entities/user.entity';
 import { Role } from './user/entities/role.entity';
 import { Permission } from './user/entities/permission.entity';
@@ -28,9 +28,14 @@ export function buildDataSourceOptions(
     entities: [User, Role, Permission, MeetingRoom, Booking],
     poolSize: 10,
     connectorPackage: 'mysql2',
-    migrations: ['./src/migrations/*.ts'],
+    migrations: ['src/migrations/*.ts'],
   };
 }
+
+ConfigModule.forRoot({
+  isGlobal: true,
+  envFilePath: envPaths,
+});
 
 export const dataSource = new DataSource(
   buildDataSourceOptions(new ConfigService()),

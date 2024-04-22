@@ -13,14 +13,8 @@ import { PermissionGuard } from './permission.guard';
 import { MeetingRoomModule } from './meeting-room/meeting-room.module';
 import { BookingModule } from './booking/booking.module';
 import { StatsModule } from './stats/stats.module';
-import { isProduction, pathJoin } from './utils';
+import { envPaths } from './utils';
 import { buildDataSourceOptions } from './data-source';
-
-const envPaths = [pathJoin('.env.local'), pathJoin('.env')];
-if (isProduction) {
-  // 生产环境下，只加载 .env 文件
-  envPaths.shift();
-}
 
 @Module({
   imports: [

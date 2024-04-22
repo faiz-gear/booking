@@ -18,3 +18,9 @@ export function generateParseIntPipe(name) {
 export const pathJoin = (path: string) => join(__dirname, path);
 
 export const isProduction = process.env.NEST_ENV === 'production';
+
+export const envPaths = [pathJoin('.env.local'), pathJoin('.env')];
+if (isProduction) {
+  // 生产环境下，只加载 .env 文件
+  envPaths.shift();
+}
