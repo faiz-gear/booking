@@ -14,7 +14,7 @@ import { MeetingRoomModule } from './meeting-room/meeting-room.module';
 import { BookingModule } from './booking/booking.module';
 import { StatsModule } from './stats/stats.module';
 import { envPaths } from './utils';
-import { buildDataSourceOptions } from './data-source';
+import { buildDataSourceOptions } from './db/data-source';
 
 @Module({
   imports: [

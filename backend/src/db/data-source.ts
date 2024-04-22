@@ -1,11 +1,11 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { envPaths, isProduction } from './utils';
-import { User } from './user/entities/user.entity';
-import { Role } from './user/entities/role.entity';
-import { Permission } from './user/entities/permission.entity';
-import { MeetingRoom } from './meeting-room/entities/meeting-room.entity';
-import { Booking } from './booking/entities/booking.entity';
+import { envPaths, isProduction } from '../utils';
+import { User } from '../user/entities/user.entity';
+import { Role } from '../user/entities/role.entity';
+import { Permission } from '../user/entities/permission.entity';
+import { MeetingRoom } from '../meeting-room/entities/meeting-room.entity';
+import { Booking } from '../booking/entities/booking.entity';
 
 export function buildDataSourceOptions(
   configService: ConfigService,

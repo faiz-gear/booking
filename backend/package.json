@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "repl": "nest start --watch --entryFile repl",
     "run:migration": "typeorm-ts-node-commonjs migration:run -d ./src/data-source.ts",
-    "revert:migration": "typeorm-ts-node-commonjs migration:revert -d ./src/data-source.ts"
+    "revert:migration": "typeorm-ts-node-commonjs migration:revert -d ./src/data-source.ts",
+    "run:migration:prod": "typeorm-ts-node-commonjs migration:run -d ./dist/data-source.js"
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "^2.0.2",
