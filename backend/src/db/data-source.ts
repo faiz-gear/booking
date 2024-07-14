@@ -28,7 +28,7 @@ export function buildDataSourceOptions(
     entities: [User, Role, Permission, MeetingRoom, Booking],
     poolSize: 10,
     connectorPackage: 'mysql2',
-    migrations: ['src/migrations/*.ts'],
+    migrations: isProduction ? ['src/migrations/*.ts'] : [],
   };
 }
 
