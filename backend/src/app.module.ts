@@ -16,6 +16,7 @@ import { StatsModule } from './stats/stats.module';
 import { envPaths } from './utils';
 import { buildDataSourceOptions } from './db/data-source';
 import { MinioModule } from './minio/minio.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MinioModule } from './minio/minio.module';
     BookingModule,
     StatsModule,
     MinioModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

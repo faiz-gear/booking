@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -34,6 +35,7 @@ import { UserListVo } from './vo/user-list.vo';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadAvatarDto } from './dto/upload-avatar.dto';
 import { storage } from 'src/uploaded-file-storage';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('用户')
 @Controller('user')
@@ -118,6 +120,7 @@ export class UserController {
     return 'done';
   }
 
+  @UseGuards(AuthGuard('local'))
   @Post('login')
   @ApiBody({
     type: LoginUserDto,
@@ -132,8 +135,8 @@ export class UserController {
     description: '用户信息和token',
     type: LoginUserVo,
   })
-  async userLogin(@Body() loginUser: LoginUserDto) {
-    return await this.userService.loginAndReturnToken(loginUser, false);
+  async userLogin(@UserInfo() userInfo: LoginUserVo) {
+    return await this.userService.getToken(userInfo);
   }
 
   @Post('admin/login')
@@ -151,7 +154,8 @@ export class UserController {
     type: LoginUserVo,
   })
   async adminLogin(@Body() loginUser: LoginUserDto) {
-    return await this.userService.loginAndReturnToken(loginUser, true);
+    const userInfo = await this.userService.login(loginUser, true);
+    return await this.userService.getToken(userInfo);
   }
 
   @ApiBearerAuth()

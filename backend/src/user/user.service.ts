@@ -165,16 +165,14 @@ export class UserService {
     return vo;
   }
 
-  async loginAndReturnToken(loginUser: LoginUserDto, isAdmin: boolean) {
-    const vo = await this.login(loginUser, isAdmin);
-
+  async getToken(loginUserVo: LoginUserVo) {
     const accessToken = this.jwtService.sign(
       {
-        userId: vo.userInfo.id,
-        username: vo.userInfo.username,
-        roles: vo.userInfo.roles,
-        permissions: vo.userInfo.permissions,
-        email: vo.userInfo.email,
+        userId: loginUserVo.userInfo.id,
+        username: loginUserVo.userInfo.username,
+        roles: loginUserVo.userInfo.roles,
+        permissions: loginUserVo.userInfo.permissions,
+        email: loginUserVo.userInfo.email,
       },
       {
         expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRES_TIME'),
@@ -183,17 +181,17 @@ export class UserService {
 
     const refreshToken = this.jwtService.sign(
       {
-        userId: vo.userInfo.id,
+        userId: loginUserVo.userInfo.id,
       },
       {
         expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRES_TIME'),
       },
     );
 
-    vo.accessToken = accessToken;
-    vo.refreshToken = refreshToken;
+    loginUserVo.accessToken = accessToken;
+    loginUserVo.refreshToken = refreshToken;
 
-    return vo;
+    return loginUserVo;
   }
 
   async findUserById(id: number, isAdmin) {
